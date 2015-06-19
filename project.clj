@@ -17,5 +17,6 @@
   :profiles
   {:dev {:repl-options {:init-ns clj-slackbot.core.handler}
          :dependencies [[javax.servlet/servlet-api "2.5"]
-                        [ring-mock "0.1.5"]]}
+                        [ring-mock "0.1.5"]
+                        [ring-server "0.4.0"]]}
    :uberjar {:aot :all}})
