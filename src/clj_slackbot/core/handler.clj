@@ -48,7 +48,7 @@
     (catch Exception e
       {:status false
        :input s
-       :result (.getMessage e)})))
+       :result (pr-str e)})))
 
 (defn format-result [r]
   (if (:status r)
@@ -62,6 +62,7 @@
          "```")
     (str "```"
          "==> " (or (:form r) (:input r)) "\n"
+         ";; Error occurred\n"
          (or (:result r) "Unknown Error")
          "```")))
 
