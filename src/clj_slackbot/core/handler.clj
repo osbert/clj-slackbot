@@ -48,7 +48,10 @@
     (catch Exception e
       {:status false
        :input s
-       :result (pr-str e)})))
+       :result e})))
+
+(defmacro store-exception-in-def [e]
+  `(def ~(gensym) ~e))
 
 (defn format-result [r]
   (if (:status r)
@@ -60,11 +63,15 @@
            "nil"
            (:result r))
          "```")
-    (str "```"
-         "==> " (or (:form r) (:input r)) "\n"
-         ";; Error occurred\n"
-         (or (:result r) "Unknown Error")
-         "```")))
+    (let [var (store-exception-in-def (:result r))]
+      (str "```"
+           "==> " (or (:form r) (:input r)) "\n"
+           ";; Error occurred: "
+           (if @var
+             (str (.getMessage @var) "\n"
+                  ";; Full exception stored in: " var)
+             "Unknown Error")
+           "```"))))
 
 (defn eval-and-post [s channel]
   (-> s
